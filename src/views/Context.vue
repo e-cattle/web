@@ -18,9 +18,9 @@
             <v-list-item-content>
               <v-list-item-title class="font-weight">
                 Código da Propriedade:
-                <v-chip dark label>
+                <v-chip color="orange" class="white--text" label>
                   <strong>
-                    {{ this.farmSelected.code }}
+                    #{{ this.farmSelected.code }}
                   </strong>
                 </v-chip>
               </v-list-item-title>
@@ -41,7 +41,28 @@
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title class="font-weight">
-                Proprietário: <strong>{{ this.farmSelected.author }}</strong>
+                Usuários:
+                <v-list class="col-3">
+                  <v-list-item
+                    v-for="user in this.farmSelected.users"
+                    :key="user.user.name"
+                  >
+                    <v-list-item-icon>
+                      <v-icon v-if="user.role === 'owner'">mdi-account-cowboy-hat</v-icon>
+                      <v-icon v-if="user.role === 'manager'">mdi-cog</v-icon>
+                      <v-icon v-if="user.role === 'viewer'">mdi-eye</v-icon>
+                    </v-list-item-icon>
+
+                    <v-list-item-content>
+                      <v-list-item-title v-text="user.user.name"></v-list-item-title>
+                    </v-list-item-content>
+
+                    <v-list-item-avatar class="float-left">
+                      <v-img :src="user.user.picture"></v-img>
+                    </v-list-item-avatar>
+
+                  </v-list-item>
+                </v-list>
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
@@ -110,11 +131,12 @@ export default {
   created () {
     this.farmSelected = this.$session.get('farmSelected')
     this.loadFarmContext()
+    this.$emit('')
   },
   methods: {
     loadFarmContext () {
       const user = this.$session.get('user')
-      axios.get(process.env.VUE_APP_CLOUD + '/manager/farm/' + this.$route.params.code, { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
+      axios.get(process.env.VUE_APP_CLOUD + '/web/farm/' + this.$route.params.code, { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
         this.farmSelected = response.data
         this.$session.set('farmSelected', response.data)
       }).catch(function (error) {

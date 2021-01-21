@@ -146,7 +146,7 @@ export default {
     loadUsers () {
       const user = this.$session.get('user')
       this.users = []
-      axios.get(process.env.VUE_APP_CLOUD + '/manager/users', { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
+      axios.get(process.env.VUE_APP_CLOUD + '/web/users', { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
         this.users = response.data
       }).catch(function (error) {
         console.log(error)

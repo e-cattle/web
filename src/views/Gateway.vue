@@ -33,11 +33,11 @@
         >
           edit
         </v-icon>
-        <!--v-icon
+        <v-icon
           @click="deleteItem(item)"
         >
           delete
-        </v-icon-->
+        </v-icon>
       </template>
       <template v-slot:no-data>
         <v-btn color="primary" @click="loadGateways">Recarregar</v-btn>
@@ -47,43 +47,33 @@
           Sua busca por <strong>"{{ search }}"</strong> não encontrou resultados.
         </v-alert>
       </template>
-      <template v-slot:footer>
-      <v-text-field
-      v-model="search"
-      append-icon="search"
-      label="Buscar">
-      </v-text-field>
-    </template>
+      <v-row wrap>
+        <template v-slot:footer>
+          <v-text-field
+          v-model="search"
+          append-icon="search"
+          label="Buscar" cols="10"
+            sm="4">
+          </v-text-field>
+        </template>
+      </v-row>
   </v-data-table>
-  <div class="pt-2 text-right">
+  <!--div class="pt-2 text-right">
     <v-btn color="primary" @click="newItem()">Cadastrar Gateway</v-btn>
-  </div>
+  </div-->
   <v-dialog v-model="dialogEditGateway" max-width="500px">
       <v-card>
         <v-card-title>
-          <span class="headline"> {{ editedGateway.created? "Editar Gateway de Código " : "Cadastrar Gateway" }}  {{ editedGateway.mac }}</span>
+          <span class="headline"> {{ "Editar Gateway " }} <!--v-chip color="gray" dark label class="plain" small>{{ editedGateway.mac }}</v-chip--></span>
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
             <v-layout wrap>
-              <v-flex xs12 sm6 md6>
-                <v-text-field v-model="editedGateway.description" label="Descrição do Gateway"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md6>
-                <v-text-field v-model="editedGateway.mac" label="MAC"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md6>
-                <v-text-field v-model="editedGateway.farm" label="Propriedade" disabled></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md6>
-                <v-select
-                  :items="this.users"
-                  item-text="name"
-                  item-value="_id"
-                  v-model="editedGateway.author"
-                  label="Proprietário"
-                  solo
-                ></v-select>
+              <v-flex xs12 sm12 md12>
+                <v-text-field
+                  v-model="editedGateway.description"
+                  label="Descrição do Gateway"
+                ></v-text-field>
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-btn
@@ -92,7 +82,7 @@
                   @click="editedGateway.active = !editedGateway.active"
                   text>
                   <v-icon left>{{ editedGateway.active ? 'cancel' : 'check' }}</v-icon>
-                  {{ editedGateway.active ? 'Desativar' : 'Ativar' }}
+                  {{ editedGateway.active ? 'Desativar Gateway' : 'Ativar Gateway' }}
                 </v-btn>
               </v-flex>
             </v-layout>
@@ -101,7 +91,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" class="white--text" @click="close">Cancelar</v-btn>
-          <v-btn color="blue darken-1" class="white--text" @click="save">Salvar</v-btn>
+          <v-btn color="blue darken-1" class="white--text" @click="enableDisable">Salvar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -122,7 +112,7 @@ export default {
         },
         { text: 'MAC', value: 'mac' },
         { text: 'Registro', value: 'created' },
-        { text: 'Proprietário', value: 'authorName' },
+        { text: 'Última alteração', value: 'author.name' },
         { text: 'Ativo', value: 'active' },
         { text: 'Ações', value: 'action', sortable: false }
       ],
@@ -152,16 +142,8 @@ export default {
       const user = this.$session.get('user')
       const farmSelected = this.$session.get('farmSelected')
       var self = this
-      axios.get(process.env.VUE_APP_CLOUD + '/manager/gateways/' + farmSelected.code, { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
+      axios.get(process.env.VUE_APP_CLOUD + '/web/gateways/' + farmSelected.code, { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
         self.gateways = response.data
-        self.gateways.forEach(item => {
-          var index = this.users.findIndex(i => i._id === item.author)
-          if (index !== -1) {
-            item.authorName = this.users[index].name
-          } else {
-            item.authorName = ''
-          }
-        })
       }).catch(function (error) {
         console.log(error)
       })
@@ -169,7 +151,7 @@ export default {
     loadUsers () {
       const user = this.$session.get('user')
       this.users = []
-      axios.get(process.env.VUE_APP_CLOUD + '/manager/users', { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
+      axios.get(process.env.VUE_APP_CLOUD + '/web/users', { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
         this.users = response.data
       }).catch(function (error) {
         console.log(error)
@@ -191,19 +173,20 @@ export default {
       this.dialogEditGateway = false
       this.editedGateway = {}
     },
-    save () {
+    enableDisable () {
       const user = this.$session.get('user')
+      var updaterUser = this.users.find(item => item.name === user.name)
+      this.editedGateway.author = updaterUser
+      this.editedGateway.approver = updaterUser
+      this.editedGateway.approve = true
+      delete this.editedGateway.changed
+      delete this.editedGateway.registered
       const gateway = this.editedGateway
-      gateway.farm = this.$session.get('farmSelected')
       if (gateway.mac !== undefined) {
-        axios.put(process.env.VUE_APP_CLOUD + '/manager/gateway/' + gateway.mac, gateway, { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
+        axios.put(process.env.VUE_APP_CLOUD + '/web/gateway/' + gateway.mac, gateway, { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
           this.dialogEditGateway = false
         }).finally(() => {
           this.enabling = false
-        })
-      } else {
-        axios.post(process.env.VUE_APP_CLOUD + '/manager/gateway', gateway, { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
-          this.dialogEditGateway = false
         })
       }
       this.editedGateway = {}

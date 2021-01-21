@@ -23,8 +23,10 @@
                     @click="go('/context', item)"
                     color="primary"
                     class="ma-2 white--text">
-                    <v-icon left>mdi-cog</v-icon>
-                    Gerenciar
+                      <v-icon v-if="item.users[0].role === 'owner'">mdi-account-cowboy-hat</v-icon>
+                      <v-icon v-if="item.users[0].role === 'manager'">mdi-cog</v-icon>
+                      <v-icon v-if="item.users[0].role === 'viewer'">mdi-eye</v-icon>
+                      {{ item.users[0].role }}
                   </v-btn>
                 </v-card-actions>
               </div>
@@ -66,7 +68,7 @@ export default {
     loadFarms () {
       const user = this.$session.get('user')
       var self = this
-      axios.get(process.env.VUE_APP_CLOUD + '/manager/farms', { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
+      axios.get(process.env.VUE_APP_CLOUD + '/manager/farms/user/' + user.email, { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
         self.farms = response.data
       }).catch(function (error) {
         console.log(error)

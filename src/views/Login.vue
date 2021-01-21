@@ -141,7 +141,7 @@ export default {
 
         var token = response.data.token
 
-        axios.get(process.env.VUE_APP_CLOUD + '/manager/user', { headers: { Authorization: 'Bearer ' + token } }).then((response) => {
+        axios.get(process.env.VUE_APP_CLOUD + '/web/user', { headers: { Authorization: 'Bearer ' + token } }).then((response) => {
           console.log(JSON.stringify(response.data))
 
           self.$session.set('user', {

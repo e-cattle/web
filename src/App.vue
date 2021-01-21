@@ -77,7 +77,6 @@ export default {
   },
   beforeCreate () {
     if (this.$route.path.includes('farm')) this.$session.remove('farmSelected')
-    console.log('BEFORE CREATE APP')
   },
   methods: {
     logoff () {
