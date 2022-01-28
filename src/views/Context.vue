@@ -131,7 +131,20 @@ export default {
   created () {
     this.farmSelected = this.$session.get('farmSelected')
     this.loadFarmContext()
-    this.$emit('')
+    const user = this.$session.get('user')
+    for (var i in this.farmSelected.users) {
+      if (this.farmSelected.users[i].user.email === user.email) {
+        this.$emit('verifyGatewayButton', this.farmSelected.users[i].role)
+      }
+    }
+  },
+  mounted () {
+    const user = this.$session.get('user')
+    for (var i in this.$session.get('farmSelected').users) {
+      if (this.farmSelected.users[i].user.email === user.email) {
+        this.$emit('verifyGatewayButton', this.farmSelected.users[i].role)
+      }
+    }
   },
   methods: {
     loadFarmContext () {

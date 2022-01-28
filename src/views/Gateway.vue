@@ -161,12 +161,16 @@ export default {
       this.editedGateway = Object.assign({}, item)
       this.dialogEditGateway = true
     },
-    newItem () {
-      this.editedGateway = Object.assign({})
-      this.dialogEditGateway = true
-    },
     deleteItem (item) {
-      console.log('delete')
+      this.enabling = true
+      this.editedGateway = Object.assign({}, item)
+      const user = this.$session.get('user')
+      axios.delete(process.env.VUE_APP_CLOUD + '/web/gateway/' + this.editedGateway.mac, { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
+        this.editedGateway = {}
+        this.loadGateways()
+      }).finally(() => {
+        this.enabling = false
+      })
     },
     close () {
       this.loadGateways()

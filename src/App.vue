@@ -33,7 +33,7 @@
               </v-list-item-icon>
               <v-list-item-title>Contexto</v-list-item-title>
             </v-list-item>
-            <v-list-item @click="go('/gateways')">
+            <v-list-item @click="go('/gateways')" :disabled="role === 'viewer'">
               <v-list-item-icon>
                 <v-icon>mdi-chip</v-icon>
               </v-list-item-icon>
@@ -72,13 +72,18 @@ export default {
   },
   data () {
     return {
-      drawer: false
+      drawer: false,
+      role: 'owner'// CONFORME O ROLE HABILITAR O BOTÃO GATEWAYS
     }
   },
   beforeCreate () {
     if (this.$route.path.includes('farm')) this.$session.remove('farmSelected')
   },
   methods: {
+    verifyGatewayButton (role) {
+      console.log(role)
+      this.role = role
+    },
     logoff () {
       this.farms = []
       this.$session.clear()

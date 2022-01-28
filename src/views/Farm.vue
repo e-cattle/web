@@ -68,7 +68,7 @@ export default {
     loadFarms () {
       const user = this.$session.get('user')
       var self = this
-      axios.get(process.env.VUE_APP_CLOUD + '/manager/farms/user/' + user.email, { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
+      axios.get(process.env.VUE_APP_CLOUD + '/web/farms/user/' + user.email, { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
         self.farms = response.data
       }).catch(function (error) {
         console.log(error)

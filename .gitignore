@@ -102,3 +102,12 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Editor file
+.editorconfig
+
+# Package file
+package-lock.json
+
+# ESLint file
+.eslintrc.js
