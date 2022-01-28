@@ -27,11 +27,11 @@
         <v-divider></v-divider>
         <v-list>
           <v-list-item-group active-class="deep-purple--text text--accent-4">
-            <v-list-item @click="go('/context')">
+            <v-list-item @click="go('/farm')">
               <v-list-item-icon>
                 <v-icon>dashboard</v-icon>
               </v-list-item-icon>
-              <v-list-item-title>Contexto</v-list-item-title>
+              <v-list-item-title>Farm</v-list-item-title>
             </v-list-item>
             <v-list-item @click="go('/gateways')" :disabled="role === 'viewer'">
               <v-list-item-icon>
@@ -45,7 +45,7 @@
               </v-list-item-icon>
               <v-list-item-title>Sobre</v-list-item-title>
             </v-list-item>
-            <v-list-item @click="go('/farm')">
+            <v-list-item @click="go('/farms')">
               <v-list-item-icon>
                 <v-icon>mdi-exit-to-app</v-icon>
               </v-list-item-icon>
@@ -77,7 +77,7 @@ export default {
     }
   },
   beforeCreate () {
-    if (this.$route.path.includes('farm')) this.$session.remove('farmSelected')
+    if (this.$route.path.includes('farms')) this.$session.remove('farmSelected')
   },
   methods: {
     verifyGatewayButton (role) {
@@ -91,7 +91,7 @@ export default {
     },
     go (path) {
       if (this.$router.currentRoute.path === path) return
-      if (path.includes('farm')) this.$session.remove('farmSelected')
+      if (path.includes('farms')) this.$session.remove('farmSelected')
       else path = `${path}/${this.$session.get('farmSelected').code}`
       this.drawer = false
       this.$router.push({ path: path })

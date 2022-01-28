@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
-import Context from '../views/Context.vue'
 import Farm from '../views/Farm.vue'
+import Farms from '../views/Farms.vue'
 import Gateway from '../views/Gateway.vue'
 import About from '../views/About.vue'
 
@@ -15,17 +15,17 @@ const routes = [
     component: Login
   },
   {
-    path: '/farm',
-    name: 'farm',
-    component: Farm,
+    path: '/farms',
+    name: 'farms',
+    component: Farms,
     meta: {
       title: 'Propriedades'
     }
   },
   {
-    path: '/context/:code',
-    name: 'context',
-    component: Context
+    path: '/farm/:code',
+    name: 'farm',
+    component: Farm
   },
   {
     path: '/gateways/:code',

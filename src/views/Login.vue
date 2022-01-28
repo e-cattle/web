@@ -121,7 +121,7 @@ export default {
     const user = this.$session.get('user')
 
     if (user !== undefined && user.authenticated) {
-      this.$router.push({ path: '/farm' })
+      this.$router.push({ path: '/farms' })
     }
   },
   mounted () {
@@ -154,7 +154,7 @@ export default {
 
           self.wait = false
 
-          self.$router.push({ path: '/farm' })
+          self.$router.push({ path: '/farms' })
         }).catch(function (error) {
           self.wait = false
           self.error = true
