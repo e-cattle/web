@@ -81,7 +81,6 @@ export default {
   },
   methods: {
     verifyGatewayButton (role) {
-      console.log(role)
       this.role = role
     },
     logoff () {
