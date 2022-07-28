@@ -131,7 +131,7 @@ export default {
   created () {
     this.farmSelected = this.$session.get('farmSelected')
     this.loadFarmContext()
-    const user = this.$session.get('user')
+    const user = this.$localStorage.get('user')
     for (var i in this.farmSelected.users) {
       if (this.farmSelected.users[i].user.email === user.email) {
         this.$parent.$parent.verifyGatewayButton(this.farmSelected.users[i].role)
@@ -140,7 +140,7 @@ export default {
   },
   methods: {
     loadFarmContext () {
-      const user = this.$session.get('user')
+      const user = this.$localStorage.get('user')
       axios.get(process.env.VUE_APP_CLOUD + '/web/farm/' + this.$route.params.code, { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
         this.farmSelected = response.data
         this.$session.set('farmSelected', response.data)

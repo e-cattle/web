@@ -144,7 +144,7 @@ export default {
   },
   methods: {
     loadUsers () {
-      const user = this.$session.get('user')
+      const user = this.$localStorage.get('user')
       this.users = []
       axios.get(process.env.VUE_APP_CLOUD + '/web/users', { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
         this.users = response.data
@@ -169,8 +169,8 @@ export default {
       this.editedUser = {}
     },
     save () {
-      const user = this.$session.get('user')
-      const farm = this.$session.get('farmSelected')
+      const user = this.$localStorage.get('user')
+      // const farm = this.$session.get('farmSelected')
       if (user._id !== undefined) {
         axios.put(process.env.VUE_APP_CLOUD + '/manager/user/' + user._id, user, { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
           this.dialogEditUser = false
@@ -187,7 +187,7 @@ export default {
     }/*,
     enable (user) {
       this.enabling = true
-      const user = this.$session.get('user')
+      const user = this.$localStorage.get('user')
       axios.put(process.env.VUE_APP_CLOUD + '/manager/user/' + user.mac, { active: true }, { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
         user.active = true
       }).finally(() => {
@@ -196,7 +196,7 @@ export default {
     },
     disable (user) {
       this.enabling = true
-      const user = this.$session.get('user')
+      const user = this.$localStorage.get('user')
       axios.put(process.env.VUE_APP_CLOUD + '/manager/user/' + user.mac, { active: false }, { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
         user.active = false
       }).finally(() => {

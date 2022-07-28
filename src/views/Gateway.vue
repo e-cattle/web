@@ -139,7 +139,7 @@ export default {
   },
   methods: {
     loadGateways () {
-      const user = this.$session.get('user')
+      const user = this.$localStorage.get('user')
       const farmSelected = this.$session.get('farmSelected')
       var self = this
       axios.get(process.env.VUE_APP_CLOUD + '/web/gateways/' + farmSelected.code, { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
@@ -149,7 +149,7 @@ export default {
       })
     },
     loadUsers () {
-      const user = this.$session.get('user')
+      const user = this.$localStorage.get('user')
       this.users = []
       axios.get(process.env.VUE_APP_CLOUD + '/web/users', { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
         this.users = response.data
@@ -164,7 +164,7 @@ export default {
     deleteItem (item) {
       this.enabling = true
       this.editedGateway = Object.assign({}, item)
-      const user = this.$session.get('user')
+      const user = this.$localStorage.get('user')
       axios.delete(process.env.VUE_APP_CLOUD + '/web/gateway/' + this.editedGateway.mac, { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
         this.editedGateway = {}
         this.loadGateways()
@@ -178,7 +178,7 @@ export default {
       this.editedGateway = {}
     },
     enableDisable () {
-      const user = this.$session.get('user')
+      const user = this.$localStorage.get('user')
       var updaterUser = this.users.find(item => item.name === user.name)
       this.editedGateway.author = updaterUser
       this.editedGateway.approver = updaterUser
@@ -198,7 +198,7 @@ export default {
     }/*,
     enable (gateway) {
       this.enabling = true
-      const user = this.$session.get('user')
+      const user = this.$localStorage.get('user')
       axios.put(process.env.VUE_APP_CLOUD + '/manager/gateway/' + gateway.mac, { active: true }, { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
         gateway.active = true
       }).finally(() => {
@@ -207,7 +207,7 @@ export default {
     },
     disable (gateway) {
       this.enabling = true
-      const user = this.$session.get('user')
+      const user = this.$localStorage.get('user')
       axios.put(process.env.VUE_APP_CLOUD + '/manager/gateway/' + gateway.mac, { active: false }, { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
         gateway.active = false
       }).finally(() => {

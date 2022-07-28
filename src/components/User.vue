@@ -29,7 +29,7 @@ export default {
     }
   },
   mounted () {
-    this.user = this.$session.get('user')
+    this.user = this.$localStorage.get('user')
   }
 }
 </script>

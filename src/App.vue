@@ -86,6 +86,7 @@ export default {
     logoff () {
       this.farms = []
       this.$session.clear()
+      this.$localStorage.remove('user')
       this.$router.push({ path: '/' })
     },
     go (path) {
@@ -94,6 +95,38 @@ export default {
       else path = `${path}/${this.$session.get('farmSelected').code}`
       this.drawer = false
       this.$router.push({ path: path })
+    }
+  },
+  localStorage: {
+    email: {
+      type: String,
+      default: ''
+    },
+    user: {
+      type: Object,
+      default: {
+        authenticated: false,
+        name: '',
+        email: '',
+        picture: '',
+        token: ''
+      }
+    },
+    synchronized: {
+      type: Number,
+      default: 0
+    },
+    notShowTutorial: {
+      type: Boolean,
+      default: false
+    },
+    beta: {
+      type: Boolean,
+      default: false
+    },
+    reliable: {
+      type: Boolean,
+      default: false
     }
   }
 }

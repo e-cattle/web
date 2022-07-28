@@ -66,7 +66,7 @@ export default {
       this.$router.push({ path: `${path}/` + item.code })
     },
     loadFarms () {
-      const user = this.$session.get('user')
+      const user = this.$localStorage.get('user')
       var self = this
       axios.get(process.env.VUE_APP_CLOUD + '/web/farms/user/' + user.email, { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
         self.farms = response.data
