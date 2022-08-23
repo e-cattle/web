@@ -226,7 +226,7 @@ export default {
   data () {
     return {
       step: 0,
-      email: 'ygo1992@gmail.com',
+      email: '',
       pin: '',
       reliable: null,
       rules: [
@@ -253,7 +253,6 @@ export default {
     providers: function () {
       return this.all.filter(function (e) {
         var social = process.env['VUE_APP_AUTH_' + e.name.toUpperCase()]
-        console.log(social)
         if (social !== undefined && social.trim().length > 0) {
           return e
         }

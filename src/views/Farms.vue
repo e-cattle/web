@@ -70,8 +70,8 @@ export default {
       var self = this
       axios.get(process.env.VUE_APP_CLOUD + '/web/farms/user/' + user.email, { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
         self.farms = response.data
-      }).catch(function (error) {
-        console.log(error)
+      }).catch(function () {
+        this.$alert('Erro ao carregar dados das propriedades, por favor contacte o suporte.', 'Aviso', 'warning')
       })
     }
   }

@@ -73,7 +73,7 @@ export default {
   data () {
     return {
       drawer: false,
-      role: 'owner'// CONFORME O ROLE HABILITAR O BOTÃO GATEWAYS
+      role: 'owner'
     }
   },
   beforeCreate () {

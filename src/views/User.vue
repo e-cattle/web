@@ -148,8 +148,8 @@ export default {
       this.users = []
       axios.get(process.env.VUE_APP_CLOUD + '/web/users', { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
         this.users = response.data
-      }).catch(function (error) {
-        console.log(error)
+      }).catch(function () {
+        this.$alert('Erro ao carregar dados dos usuários, por favor contacte o suporte.', 'Aviso', 'warning')
       })
     },
     editItem (item) {
@@ -161,7 +161,7 @@ export default {
       this.dialogEditUser = true
     },
     deleteItem (item) {
-      console.log('delete')
+      this.$alert('Erro ao deletar usuário, por favor contacte o suporte.', 'Aviso', 'warning')
     },
     close () {
       this.loadGateways()
@@ -179,6 +179,7 @@ export default {
         })
       } else {
         axios.post(process.env.VUE_APP_CLOUD + '/manager/user', user, { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
+          this.$alert('Usuário cadastrado.', 'Aviso', 'success')
           this.dialogEditUser = false
         })
       }

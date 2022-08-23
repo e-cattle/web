@@ -144,8 +144,8 @@ export default {
       var self = this
       axios.get(process.env.VUE_APP_CLOUD + '/web/gateways/' + farmSelected.code, { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
         self.gateways = response.data
-      }).catch(function (error) {
-        console.log(error)
+      }).catch(function () {
+        this.$alert('Erro ao carregar dados dos gateways, por favor contacte o suporte.', 'Aviso', 'warning')
       })
     },
     loadUsers () {
@@ -153,8 +153,8 @@ export default {
       this.users = []
       axios.get(process.env.VUE_APP_CLOUD + '/web/users', { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
         this.users = response.data
-      }).catch(function (error) {
-        console.log(error)
+      }).catch(function () {
+        this.$alert('Erro ao carregar dados dos usuários, por favor contacte o suporte.', 'Aviso', 'warning')
       })
     },
     editItem (item) {

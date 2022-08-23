@@ -144,8 +144,8 @@ export default {
       axios.get(process.env.VUE_APP_CLOUD + '/web/farm/' + this.$route.params.code, { headers: { Authorization: 'Bearer ' + user.token } }).then((response) => {
         this.farmSelected = response.data
         this.$session.set('farmSelected', response.data)
-      }).catch(function (error) {
-        console.log(error)
+      }).catch(function () {
+        this.$alert('Erro ao carregar dados da propriedade, por favor contacte o suporte.', 'Aviso', 'warning')
       })
     },
     logoff () {
