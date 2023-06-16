@@ -45,7 +45,7 @@
                 <v-list class="col-3">
                   <v-list-item
                     v-for="user in this.farmSelected.users"
-                    :key="user.user.name"
+                    :key="user.user.email"
                   >
                     <v-list-item-icon>
                       <v-icon v-if="user.role === 'owner'">mdi-account-cowboy-hat</v-icon>
@@ -54,7 +54,7 @@
                     </v-list-item-icon>
 
                     <v-list-item-content>
-                      <v-list-item-title v-text="user.user.name"></v-list-item-title>
+                      <v-list-item-title v-text="user.user.name || user.user.email"></v-list-item-title>
                     </v-list-item-content>
 
                     <v-list-item-avatar class="float-left">
