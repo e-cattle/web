@@ -1,5 +1,5 @@
 # stage 1 as builder
-FROM node:lts-alpine as builder
+FROM node:16.20-alpine as builder
 
 # Define folder
 WORKDIR /usr/src/app
@@ -10,7 +10,7 @@ COPY . .
 # Build the project
 RUN npm install
 RUN npm cache clean --force
-RUN npm run build
+RUN npm run build 
 
 # stage 2 as production-build
 FROM nginx:alpine as production-build
